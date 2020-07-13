@@ -6,6 +6,9 @@ import (
 )
 
 // A map of registered matchers for searching.
+//未定义在任何函数体内，所以为包级别变量
+//当代码中引入任意一个包时，程序代码可以直接访问该包中任何公开的标识符。
+//以大些字母开头的标识符为公开的标识符。小写字母开头的为不公开的标识符
 var matchers = make(map[string]Matcher)
 
 // Run performs the search logic.
@@ -35,7 +38,7 @@ func Run(searchTerm string) {
 		}
 
 		// Launch the goroutine to perform the search.
-		go func(matcher Matcher, feed *Feed) {
+		go func(matcher Matcher, feed * ) {
 			Match(matcher, feed, searchTerm, results)
 			waitGroup.Done()
 		}(matcher, feed)

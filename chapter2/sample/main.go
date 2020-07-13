@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	//下划线的作用是对包做初始化操作，但是并不使用包里的标识符
 	_ "github.com/goinaction/code/chapter2/sample/matchers"
 	"github.com/goinaction/code/chapter2/sample/search"
 )
