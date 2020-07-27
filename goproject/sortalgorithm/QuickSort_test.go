@@ -2,7 +2,6 @@ package sortalgorithm
 
 import (
 	"fmt"
-	"testing"
 )
 
 // Sort2 归并排序
@@ -134,9 +133,49 @@ func quick3way(list []int, low int, high int) (int, int) {
 	return lt, gt
 }
 
-func TestSort2(t *testing.T) {
-	list := []int{4, 3, 4, 5, 7, 1, 4, 9}
-	fmt.Printf("%+v\n", list)
-	QuickSort(list)
-	fmt.Printf("%+v\n", list)
+func getMax(list []int) int {
+	max := list[0]
+	for i := 1; i < len(list); i++ {
+		if max < list[i] {
+			max = list[i]
+		}
+	}
+	return max
 }
+
+/*
+	桶排序
+	适用于数据范围n不是很大的数量排序
+	思路：将数据分成k=n/m个桶，每个桶的数据量为n/m,在对每个桶使用快速排序即可
+*/
+func BucketSort(list []int) {
+	num := len(list)
+	if num <= 1 {
+		return
+	}
+	max := getMax(list)
+	bucketNum := max
+	buckets := make([][]int, bucketNum) //二维切片
+	//分桶
+	for i := 0; i < num; i++ {
+		index := list[i] * (bucketNum - 1) / max
+		buckets[index] = append(buckets[index], list[i])
+	}
+	tmppos := 0
+	//对每个桶内的数据进行排序
+	for i := 0; i < bucketNum; i++ {
+		fmt.Printf("%d\n", len(buckets[i]))
+		if len(buckets[i]) > 1 {
+			QuickSort(buckets[i])
+		}
+		copy(list[tmppos:], buckets[i])
+		tmppos += len(buckets[i])
+	}
+}
+
+// func TestSort2(t *testing.T) {
+// 	list := []int{1, 6, 3, 5, 8, 6, 4, 5, 12, 4, 7, 8, 13, 2, 4}
+// 	fmt.Printf("%+v\n", list)
+// 	BucketSort(list)
+// 	fmt.Printf("%+v\n", list)
+// }
